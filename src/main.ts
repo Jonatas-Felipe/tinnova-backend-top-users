@@ -9,13 +9,11 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: '0.0.0.0',
-      port: 3334,
+      port: process.env.PORT || 3334,
     },
   });
   await app.listen();
 
-  // const app = await NestFactory.create(AppModule);
-  // await app.listen(3334);
   console.log("Microsserviço 'top-users' está rodando na porta 3334");
 }
 

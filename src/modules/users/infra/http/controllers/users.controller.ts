@@ -34,7 +34,6 @@ class UsersController {
       onlyActives: boolean | undefined;
     },
   ) {
-    console.log('onlyActives', onlyActives);
     const users = await this.showAllUsersService.execute(page, onlyActives);
 
     return users;
