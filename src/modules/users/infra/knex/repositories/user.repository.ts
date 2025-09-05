@@ -15,18 +15,28 @@ class UsersRepository implements IUserRepository {
 
   public async findAll(
     page: number | undefined,
+    onlyActives: boolean | undefined,
   ): Promise<User[] | IPagination<User>> {
     let users = this.knex<User>('users')
       .where({ is_deleted: false })
       .orderBy([{ column: 'created_at', order: 'asc' }]);
 
-    if (page) {
-      const totalData = (await this.knex<User>('users')
-        .where({ is_deleted: false })
-        .count('*')
-        .first()) as unknown as { count: string };
+    if (onlyActives) {
+      users = users.andWhere({ status: 'ativo' });
+    }
 
-      const total = parseInt(totalData.count, 10);
+    if (page) {
+      let totalData = this.knex<User>('users').where({ is_deleted: false });
+
+      if (onlyActives) {
+        totalData = totalData.andWhere({ status: 'ativo' });
+      }
+
+      const newTotalData = (await totalData.count('*').first()) as unknown as {
+        count: string;
+      };
+
+      const total = parseInt(newTotalData.count, 10);
 
       let from = 0;
       let to = 0;

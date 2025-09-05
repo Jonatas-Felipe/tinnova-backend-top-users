@@ -24,8 +24,18 @@ class UsersController {
   ) {}
 
   @MessagePattern({ cmd: 'users_find_all' })
-  async index(@Payload() { page }: { page: number | undefined }) {
-    const users = await this.showAllUsersService.execute(page);
+  async index(
+    @Payload()
+    {
+      page,
+      onlyActives,
+    }: {
+      page: number | undefined;
+      onlyActives: boolean | undefined;
+    },
+  ) {
+    console.log('onlyActives', onlyActives);
+    const users = await this.showAllUsersService.execute(page, onlyActives);
 
     return users;
   }

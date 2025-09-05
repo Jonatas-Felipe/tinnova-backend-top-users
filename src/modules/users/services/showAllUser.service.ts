@@ -10,8 +10,11 @@ class ShowAllUserService {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(page: number | undefined): Promise<User[] | IPagination<User>> {
-    const users = await this.userRepository.findAll(page);
+  async execute(
+    page: number | undefined,
+    onlyActives: boolean | undefined,
+  ): Promise<User[] | IPagination<User>> {
+    const users = await this.userRepository.findAll(page, onlyActives);
 
     return users;
   }
